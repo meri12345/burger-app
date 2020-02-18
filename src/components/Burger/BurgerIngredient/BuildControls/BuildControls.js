@@ -20,7 +20,7 @@ const buildControls = (props) =>(
             key={el.label+i}
             label={el.label}/>
         ))}
-        <button disabled={!props.canOrder} className={classes.OrderButton}>ORDER NOW</button>
+        <button disabled={!props.canOrder} className={classes.OrderButton} onClick={props.order}>ORDER NOW</button>
     </div>
 );
 

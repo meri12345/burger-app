@@ -21,7 +21,12 @@ class BurgerBuilder extends Component {
             
         },
         totalPrice:4,
-        canOrder: false
+        canOrder: false,
+        clickOrder: false
+    }
+
+    orderHandler=()=>{
+        this.setState({clickOrder:true});
     }
 
     updateOrder =()=>{
@@ -97,6 +102,10 @@ class BurgerBuilder extends Component {
 
     }
 
+    cancelOrder = () =>{
+        this.setState({clickOrder:false})
+    }
+
     render(){
        
         const disabledInfo={
@@ -109,7 +118,7 @@ class BurgerBuilder extends Component {
 
        return (
            <div>
-               <Modal>
+               <Modal show={this.state.clickOrder} modalClosed={this.cancelOrder} >
                    <OrderSummary ingredients={this.state.ingredinets}/>
                </Modal>
                <Burger ingredients={this.state.ingredinets}/>
@@ -118,7 +127,8 @@ class BurgerBuilder extends Component {
                remove={this.removeIngredient} 
                add={this.addIngredient}
                disabled={disabledInfo}
-               price={this.state.totalPrice}/>
+               price={this.state.totalPrice}
+               order={this.orderHandler}/>
            </div>
        ); 
     }    

@@ -1,5 +1,4 @@
 import React from 'react'
-import Aux from '../../../../../components/Aux'
 
 const orderSummary = (props) =>{
 
@@ -14,7 +13,9 @@ return(<div>
     <ul>
     {ingredientSummary}
     </ul>
-    <p>Continue</p>
+    <p>Continue to checkout?</p>
+    <button >CANCEL</button>
+    <button>CONTINUE</button>
     </div>);    
 };
 
