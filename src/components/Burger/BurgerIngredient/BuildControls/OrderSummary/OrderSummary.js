@@ -8,14 +8,14 @@ const ingredientSummary=Object.keys(props.ingredients)
 return <li key={igKey}><span style={{textTransform:'capitalize'}}>{igKey}</span>: {props.ingredients[igKey]}</li>
 })
 
-return(<Aux>
+return(<div>
     <h3>Your Order</h3>
     <p>Delicious hamburger with following ingredients:</p>
     <ul>
     {ingredientSummary}
     </ul>
     <p>Continue</p>
-    </Aux>);    
+    </div>);    
 };
 
 export default orderSummary;
