@@ -14,6 +14,7 @@ return(<div>
     <ul>
     {ingredientSummary}
     </ul>
+<p><strong>Total proce: {props.price.toFixed(2)} $</strong></p>
     <p>Continue to checkout?</p>
     <Button click={props.click} btnType='Danger'>CANCEL</Button>
     <Button click={props.continue} btnType='Success'>CONTINUE</Button>
