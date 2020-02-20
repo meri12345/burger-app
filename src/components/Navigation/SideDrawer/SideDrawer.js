@@ -5,12 +5,15 @@ import classes from './SideDrawer.css'
 import Backdrop from '../../UI/Backdrop/Backdrop'
 
 const sideDrawer=(props)=>{
-
+let addClass=[classes.SideDrawer,classes.Close];
+if(props.open){
+addClass=[classes.SideDrawer,classes.Open]
+}
 
     return (
         <div >
-            <Backdrop />
-             <div className={classes.SideDrawer}>
+            <Backdrop show={props.open} click={props.closed}/>
+             <div className={addClass.join(' ')}>
             <Logo high="11%"/>
             <nav>
                 <NavigationItems/>
