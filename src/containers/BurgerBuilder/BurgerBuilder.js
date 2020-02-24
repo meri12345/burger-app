@@ -16,17 +16,21 @@ const INGREDIENT_PRICES = {
 
 class BurgerBuilder extends Component {
     state={
-        ingredinets:{
-            salad:0,
-            bacon:0,
-            cheese:0,
-            meat:0,
-            
-        },
+        ingredinets:null,
         totalPrice:4,
         canOrder: false,
         clickOrder: false,
-        loading:false
+        loading:false,
+        error:null
+    }
+    componentDidMount(){
+        axios.get('https://burger-app-afb45.firebaseio.com/ingredients.json')
+        .then(response=>{
+            this.setState({ingredinets:response.data});
+        })
+        .catch( err => {
+            this.setState({error:true});
+        })
     }
 
     orderHandler=()=>{
@@ -126,12 +130,12 @@ class BurgerBuilder extends Component {
         },
         deliveryMethod:'fastest'
     }
-       axios.post('/orders.jsaon',order)
+       axios.post('/orders.json',order)
        .then(response => {
            console.log(response);
         this.setState({loading:false,clickOrder:false});
        }
-       )
+       ) 
        .catch(error=>{
         this.setState({loading:false,clickOrder:false});
         console.log(error);
@@ -147,26 +151,36 @@ class BurgerBuilder extends Component {
         for(let key in disabledInfo){
             disabledInfo[key]=disabledInfo[key]<=0;
         }
+       
 
-        let orderSummary=(<OrderSummary price={this.state.totalPrice} click={this.cancelOrder} continue={this.continueHandler} ingredients={this.state.ingredinets}/>    
-);
-    if(this.state.loading){
-        orderSummary=(<Spinner/>);
-    }
+    
+let burger=this.state.error ? <p>Ingredients can't load</p>:<Spinner/>;
+let orderSummary=null;
+
+if(this.state.ingredinets){
+    burger=(
+        <div><Burger ingredients={this.state.ingredinets}/>
+        <BuildControls 
+        canOrder={this.state.canOrder}
+        remove={this.removeIngredient} 
+        add={this.addIngredient}
+        disabled={disabledInfo}
+        price={this.state.totalPrice}
+        order={this.orderHandler}/> </div>);
+
+        orderSummary=
+        (<OrderSummary price={this.state.totalPrice} click={this.cancelOrder} continue={this.continueHandler} ingredients={this.state.ingredinets}/>  );
+}
+if(this.state.loading){
+    orderSummary=(<Spinner/>);
+}
         
        return (
            <div>
                <Modal show={this.state.clickOrder} modalClosed={this.cancelOrder} >
                    {orderSummary}
                </Modal>
-               <Burger ingredients={this.state.ingredinets}/>
-               <BuildControls 
-               canOrder={this.state.canOrder}
-               remove={this.removeIngredient} 
-               add={this.addIngredient}
-               disabled={disabledInfo}
-               price={this.state.totalPrice}
-               order={this.orderHandler}/>
+               {burger}
            </div>
        ); 
     }    
