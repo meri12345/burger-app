@@ -92,9 +92,13 @@ state={
                     ],
                     
                 },
-                value:''
+                value:'cheapest',
+                validation:{},
+                valid:true
             },},
-    loading:false
+    loading:false,
+    formValid:false
+
 }
 
 orderHandler=(event)=>{
@@ -135,8 +139,15 @@ changehandler=(event,id)=>{
     updatedForm.touched=true;
     updatedForm.valid=this.validation(updatedForm.value,updatedForm.validation)
     form[id]=updatedForm;
-    this.setState({orderForm:form});
+    let formValid=true;
     
+    for(let el in form){
+        
+        formValid=form[el].valid && formValid;
+    }
+    console.log(formValid);
+    this.setState({orderForm:form, formValid:formValid});
+  
 }
 
 validation(value,rules){
@@ -175,7 +186,7 @@ elementsArray.push({
              touched={el.config.touched}
              change={(event)=>this.changehandler(event,el.id)}/> 
         ))}       
-        <Button btnType="Success">Finish Order</Button>
+        <Button disabled={!this.state.formValid} btnType="Success">Finish Order</Button>
 
     </form>);
 
