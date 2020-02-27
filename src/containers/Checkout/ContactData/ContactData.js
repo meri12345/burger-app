@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 import Button from '../../../components/UI/Button/Button'
 import classes from './ContactData.css'
+import {connect} from 'react-redux';
+import * as actionTypes from '../../../store/actions'
 import axios from '../../../axios-order'
 import Input from '../../../components/UI/Input/Input'
 import Spinner from '../../../components/UI/Spinner/Spinner'
@@ -109,7 +111,7 @@ event.preventDefault();
     data[el]=this.state.orderForm[el].value
    }
         const order= {
-            ingredients:this.props.ingredients,
+            ingredients:this.props.ings,
             price:this.props.price,
             orderData:data
            
@@ -201,5 +203,11 @@ elementsArray.push({
     );
 }
 }
-
-export default ContactData;
+const mapStateToProps = state =>{
+    return{
+        ings:state.ingredients,
+        price:state.totalPrice
+    }
+   }
+  
+export default connect(mapStateToProps)(ContactData);
